@@ -1,0 +1,1 @@
+export enum BufferSpace {flags = 2, indexEntry = 4, sha = 20}
