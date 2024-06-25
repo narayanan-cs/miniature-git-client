@@ -1,0 +1,40 @@
+{"compilerOptions": {
+//   "baseUrl": "./src",
+//   //"types":[],
+   "rootDir": ".",
+//   "module": "nodenext",
+//   "target": "es2017", // set to the *lowest* target you support
+   //"moduleResolution": "bundler",
+   "paths": {
+    "@app/*": ["./src/*","./tests/*"],
+  },
+//  // "es-module-specifier-resolution": "node",  
+//   "declaration": true,
+ 
+//   "declarationMap": true,
+//   //  "moduleResolution": "node",
+  //  "noEmit": true,
+  // "allowImportingTsExtensions": true,
+  //    "target": "es2017",
+  //    "strict": true,
+     
+  
+  //    "declarationMap": true,
+  // //   "esModuleInterop": true,
+  "module": "commonjs",
+        "target": "es2017",
+       
+    "outDir": "./dist/",
+    "noImplicitAny": true,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "sourceMap": true,
+    "composite": true
+  },
+  "include":["src/**/*","tests/**/*"],
+  "exclude": ["../node_modules"],
+  "allowImportingTsExtensions": true
+  
+
+
+}

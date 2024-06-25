@@ -1,0 +1,14 @@
+{
+//    "extends":"../tsconfig.json",
+    "compilerOptions": {
+        "module": "es2022",
+        "target": "es2017",
+        "noImplicitAny": true,
+        "noEmitOnError": true,
+        "removeComments": true,
+        "preserveConstEnums": true,
+        "sourceMap": true
+      },
+    
+  //  "references": [{"path":"../src"}]
+}

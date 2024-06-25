@@ -1,0 +1,35 @@
+{
+  "name": "ccgit",
+  "version": "1.0.0",
+  "description": "Git Client",
+  "main": "index.js",
+  "author": "Narayanan Chandrasekar",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.7.2",
+    "dotenv": "^16.4.5",
+    "file-system": "^2.2.2",
+    "lodash": "^4.17.21",
+    "sha1": "^1.1.1",
+    "typescript": "^5.5.0-dev.20240412"
+  },
+  "devDependencies": {
+    "@types/axios": "^0.14.0",
+    "@types/jest": "^29.5.12",
+    "@types/lodash": "^4.17.0",
+    "@types/node": "^20.12.13",
+    "jest": "^29.7.0",
+    "ts-node": "^10.9.2"
+  },
+  "scripts": {
+    "build": "node_modules/.bin/tsc",
+    "ccgitinit": "node dist/src/init.js",
+    "ccgitstatus": "node dist/src/ccgitstatus.js",
+    "ccgitadd": "node dist/src/ccgitadd.js",
+    "ccgitcommit": "node dist/src/Commit.js",
+    "ccgitdiff": "node dist/src/ccgitdiff.js",
+    "ccgitgc": "node dist/src/ccgitgc.js",
+    "ccgitpush": "node dist/src/ccgitpush.js",
+    "test": "jest"
+  }
+}

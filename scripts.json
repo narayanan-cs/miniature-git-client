@@ -1,0 +1,10 @@
+{"scripts": {
+    "build": "../node_modules/.bin/tsc",
+    "ccgitinit": "node ../dist/src/init.js",
+    "ccgitstatus": "node ../dist/src/ccgitstatus.js",
+    "ccgitadd": "node ../dist/src/ccgitadd.js",
+    "ccgitcommit": "node ../dist/src/ccgitcommit.js",
+    "ccgitdiff": "node ../dist/src/ccgitdiff.js",
+    "ccgitpush": "node ../dist/src/ccgitpush.js"
+  }
+}
