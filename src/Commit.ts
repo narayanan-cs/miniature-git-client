@@ -383,12 +383,13 @@ return isAlreadyCommited
 
 public isDBPacked(): boolean
 {
-    this.packFile = fs.readdirSync(this.packDirectory).
+    if(fs.existsSync(this.packDirectory))
+    {
+        this.packFile = fs.readdirSync(this.packDirectory).
         filter((content=>
             content.substring(content.length-4) === 'pack'
         )).join(",")
-        console.log(this.packFile,"packFile")
-
+    }
      return this.packFile.length > 0   
 }
 }
