@@ -68,7 +68,7 @@ export class Commit
             while(indexFileContents.length > l)
             {
             indexFileContents.copy(fileNameLength,0,l,l+2)
-            //console.log(fileNameLength,"FilenameLength Buffer")
+            
              let secondEntryLength = <number>this.utils.readIntegersFromBuffer(fileNameLength,16,0,'BE')
              spaceForNull = 8 - (l + 2 + secondEntryLength - k)%8
              secondEntry = this.utils.allocateBufferSpace(l+2+secondEntryLength+spaceForNull-k)

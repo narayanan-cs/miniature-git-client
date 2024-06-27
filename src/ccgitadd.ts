@@ -65,7 +65,7 @@ export class ccgitadd
         return stats.isFile()?true:false
       }  catch(e)
       {
-        console.log(e.code,e.message)
+        console.log(e.message)
       }
     }
   public prepareInputIndexEntries(fileName: string): void
@@ -79,8 +79,7 @@ try
    fileContent = fs.readFileSync(fileName)
 }catch(e)
 {
-  console.log(e)
-  throw new Error(`The file ${fileName} does not exist or error occured while reading the file`)
+  console.log(e.message)
 }
 const indexEntry = {
   fileName: fileName,

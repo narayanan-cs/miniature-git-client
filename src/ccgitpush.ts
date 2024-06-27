@@ -120,7 +120,7 @@ export class ccgitpush
         )).join(",")
         }catch (e)
         {
-            throw new Error(` Error in reading ${this.packDirectory} `)
+            console.log(e.message)
         }
         const payload = fs.readFileSync(this.packDirectory+"/"+packFile)
         const oldSha = await this.getOldSha()

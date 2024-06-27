@@ -221,7 +221,7 @@ export class UpdateIndex
             
              this.individualOldEntries.forEach(oldEntry=>{
                  const oldFilename = this._getFilenameOf(oldEntry)
-                 if(oldFilename === entry.fileName)   
+                 if(oldFilename.toUpperCase() === entry.fileName.toUpperCase())   
                 {
                     this.individualOldEntries.splice(this.individualOldEntries.indexOf(oldEntry),1)
                 }

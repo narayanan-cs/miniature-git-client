@@ -9,6 +9,4 @@
         "preserveConstEnums": true,
         "sourceMap": true
       },
-    
-  //  "references": [{"path":"../src"}]
 }

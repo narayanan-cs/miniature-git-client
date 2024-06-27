@@ -25,9 +25,9 @@ public  diff(oldString: string, newString: string, options = {}): string[] {
     oldString = this.castInput(oldString, options);
     newString = this.castInput(newString, options);
 
-   oldString  = this.removeEmpty(this.tokenize(oldString, options));
+    oldString  = this.removeEmpty(this.tokenize(oldString, options));
     newString = this.removeEmpty(this.tokenize(newString, options));
-console.log(oldString, newString)
+
     let newLen = newString.length, oldLen = oldString.length;
     let editLength = 1;
     let maxEditLength = newLen + oldLen;

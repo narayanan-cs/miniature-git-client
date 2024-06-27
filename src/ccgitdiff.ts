@@ -31,7 +31,7 @@ public getDifferencesBetweenTwoFiles(deflatedFile: string, file: string): void
      secondFile = fs.readFileSync(file)
    } catch(e)
    {
-    throw new Error(`${file} not found`)
+   console.log(e.message)
    }
    
     const lines2 = secondFile.toString()
@@ -50,10 +50,7 @@ public getDifferencesBetweenTwoVersionsOf(fileName: string): void
         const fileContents = fs.readFileSync(fileName)
     } catch(e)
     {
-        if(e.code === "ENOENT")
-            {
-                throw new Error(`${fileName} not found`)
-            }
+        console.log(e.message)
     }
     this.extractOldEntries()
     this.commit._individualOldEntries.forEach(oldEntry=>{
@@ -78,8 +75,10 @@ console.log(`index `+sha1OfOldEntry.toString('hex').substring(0,7)+`..`+this.cal
 console.log(`--- a/${fileName}`)
 console.log(`+++ b/${fileName}`)
 
-    this.getDifferencesBetweenTwoFiles(filePath, fileName)
-
+if(fs.existsSync(filePath))
+    {
+        this.getDifferencesBetweenTwoFiles(filePath, fileName)    
+    }
 }
 
 public calculateShaOf(fileName: string): string

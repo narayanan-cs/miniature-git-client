@@ -59,7 +59,7 @@ export class Init
         fs.mkdirSync(this.gitDir)
     }
     public async getUserInput(): Promise<void>
-    {console.log("Inside user input")
+    {
         const rl = readline.createInterface({
             input: process.stdin,
             output: process.stdout,
@@ -71,8 +71,8 @@ export class Init
         console.log("Please provide your email")  
         const email = await it.next().then(result=>result.value)  
         this.config.email = <string><unknown>email
-        console.log("Enter the remote repository url.Please enter the absolute path \
-        Example: https://github.com/<your username>/<your repository name>.git \
+        console.log("Enter the remote repository url.Please enter the absolute path \n \
+        Example: https://github.com/<your username>/<your repository name>.git \n \
         Mine is, say, https://github.com/narayanan-cs/myrepository.git")
         
         const url = await it.next().then(result=>result.value)
