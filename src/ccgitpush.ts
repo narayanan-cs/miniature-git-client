@@ -1,5 +1,6 @@
 import * as fs from 'fs'
-import * as axios from 'axios'
+import axios from 'axios'
+//import * as axios from 'axios'
 import * as readline from 'readline'
 import {execSync} from 'child_process'
 import { Commit } from './Commit'
@@ -21,30 +22,41 @@ export class ccgitpush
     }
 
     
-    private async getOldSha(): Promise<string>
+    private async getOldSha(): Promise<{ branch: string, oldSha: string }>
     {
         let oldSha
         const url = process.env.REMOTE_URL + "/info/refs"
-        await axios.get(url,{
+        try{
+            const response = await axios.get(url,{
             auth:{
-                username: process.env.USER,
-                password: process.env.PAT
+                username: process.env.USER || '',
+                password: process.env.PAT || ''
             },
             params:{
                 service: "git-receive-pack"
             }
-        }).then(
-            function(response:any, error:any)
-            {
+        })
                 console.log(response.data)
                 oldSha = response.data.substring(39,79)
-            }
-        ).catch(function(error: any){
-            console.log(error.errno,error.code)
-        }).finally(function(){
-    
-        })
-         return oldSha
+             if (!oldSha || oldSha.length !== 40) {
+                  throw new Error("Invalid SHA in response")
+             }
+             const refLine = response.data.split('\n').find((line:string) => line.includes('refs/heads/'));
+             const defaultBranch = refLine?.match(/refs\/heads\/(\w+)/)?.[1];
+             return {"branch": defaultBranch,"oldSha":oldSha}
+          
+        } catch(error: any){
+            console.error("Failed to fetch old SHA:");
+        if (error.response) {
+            console.error("Status:", error.response.status);
+            console.error("Body:", error.response.data);
+        } else if (error.request) {
+            console.error("No response received:", error.request);
+        } else {
+            console.error("Axios error:", error.message);
+        }
+        throw new Error("getOldSha() failed");
+        }
     }
 
     private getNewSha(): string
@@ -98,7 +110,7 @@ export class ccgitpush
                 Accept:"application/x-git-receive-pack-result"
                     }
         }).then(
-            function(response:any, error:any)
+            function(response:any)
             {
                 console.log(response.data)
                 
@@ -122,15 +134,21 @@ export class ccgitpush
         {
             console.log(e.message)
         }
+        
         const payload = fs.readFileSync(this.packDirectory+"/"+packFile)
-        const oldSha = await this.getOldSha()
-        const partialPayload = "refs/heads/master" + Buffer.alloc(1).fill("\u0000") +" report-status side-band-64k agent=git/2.27.0.windows.1"
+        let res
+        res  = await this.getOldSha()
+        
+        console.log( res.oldSha, newSha)
+        
+        const partialPayload = `refs/heads/${res.branch}`+ Buffer.alloc(1).fill("\u0000")  + " report-status side-band-64k agent=git/2.27.0.windows.1"
         const endOfPartialPayloadIndicator = "0000"
-        const chunkTextLength = (4+oldSha.length+" ".length+newSha.length+" ".length+partialPayload.length).toString(16)
+           
+        const chunkTextLength = (4+res.oldSha.length+" ".length+newSha.length+" ".length+partialPayload.length).toString(16)
         const chunkLength = Buffer.alloc(4).fill("00"+chunkTextLength,0,4)
-        const spaceForBody = 4+ oldSha.length+" ".length+newSha.length+" ".length+partialPayload.length+endOfPartialPayloadIndicator.length+payload.length
-        const body =  Buffer.alloc(spaceForBody).fill(chunkLength.toString()+oldSha+ " "+ newSha + " "+ partialPayload+endOfPartialPayloadIndicator,0,4+oldSha.length+ " ".length+ newSha.length + " ".length+ partialPayload.length+endOfPartialPayloadIndicator.length)
-        payload.copy(body, (4+oldSha.length+" ".length+newSha.length+" ".length+partialPayload.length+endOfPartialPayloadIndicator.length), 0, payload.length)
+        const spaceForBody = 4+ res.oldSha.length+" ".length+newSha.length+" ".length+partialPayload.length+endOfPartialPayloadIndicator.length+payload.length
+        const body =  Buffer.alloc(spaceForBody).fill(chunkLength.toString()+res.oldSha+ " "+ newSha + " "+ partialPayload+endOfPartialPayloadIndicator,0,4+res.oldSha.length+ " ".length+ newSha.length + " ".length+ partialPayload.length+endOfPartialPayloadIndicator.length)
+        payload.copy(body, (4+res.oldSha.length+" ".length+newSha.length+" ".length+partialPayload.length+endOfPartialPayloadIndicator.length), 0, payload.length)
         return Promise.resolve(body)
     }
 }
