@@ -30,12 +30,13 @@ jobs:
       - name: Build TypeScript
         run: yarn build
 
-      - name: Inject environment variables into .env
+      - name: Inject environment variables into both .env files
         run: |
-          echo "USER=${{ secrets.GIT_USERNAME }}" >> .env
-          echo "EMAIL=${{ secrets.GIT_EMAIL }}" >> .env
-          echo "REMOTE_URL=${{ secrets.GIT_REMOTE_URL }}" >> .env
-          echo "PAT=${{ secrets.GIT_PAT }}" >> .env
-
+          for dir in test myrepo9; do
+            echo "USER=${{ secrets.GIT_USERNAME }}" >> $dir/.env
+            echo "EMAIL=${{ secrets.GIT_EMAIL }}" >> $dir/.env
+            echo "REMOTE_URL=${{ secrets.GIT_REMOTE_URL }}" >> $dir/.env
+            echo "PAT=${{ secrets.GIT_PAT }}" >> $dir/.env
+          done
       - name: Run tests
         run: yarn test
