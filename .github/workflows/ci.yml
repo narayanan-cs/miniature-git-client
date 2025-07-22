@@ -12,6 +12,8 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
+  environment: ci-test  
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -27,6 +29,13 @@ jobs:
 
       - name: Build TypeScript
         run: yarn build
+
+      - name: Inject environment variables into .env
+        run: |
+          echo "USER=${{ secrets.GIT_USERNAME }}" >> .env
+          echo "EMAIL=${{ secrets.GIT_EMAIL }}" >> .env
+          echo "REMOTE_URL=${{ secrets.GIT_REMOTE_URL }}" >> .env
+          echo "PAT=${{ secrets.GIT_PAT }}" >> .env
 
       - name: Run tests
         run: yarn test
