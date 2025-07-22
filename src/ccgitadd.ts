@@ -52,10 +52,13 @@ export class ccgitadd
         let that = this
         function ignoreDirectories(entry: string)
         {
+            if(entry.includes('.git'))
+             return false  
             return that._isFile(entry)?true:false
             
         }
         const files = directoriesAndFiles.filter(ignoreDirectories)
+
         return <string[]>files
     }
     private _isFile(entry: string): boolean

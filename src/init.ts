@@ -5,6 +5,7 @@ dotenv.config()
 export class Init 
 {
     public repositoryName: string
+    public envFile: string
     public gitDir: string
     public headFile: string
     public configFile: string
@@ -29,12 +30,13 @@ export class Init
         }
        
         this.repositoryName = args[2]
+        this.envFile = this.repositoryName + "/.env"
         this.gitDir = this.repositoryName +"/" +".git"
         this.headFile = this.gitDir + "/" + "HEAD"
         this.configFile = this.gitDir + "/" + "config"
         this.descriptionFile = this.gitDir + "/" + "description"
         this.hooksDir = this.gitDir + "/" + "hooks"
-        this.infoDir = this.gitDir + "/" + "/info"
+        this.infoDir = this.gitDir + "/" + "info"
         this.infoRefsFile = this.infoDir + "/refs"
         this.objectsDir = this.gitDir + "/" + "objects"
         this.refsDir = this.gitDir + "/" + "refs"
@@ -53,9 +55,10 @@ export class Init
         if(fs.existsSync(this.gitDir))
         {
         console.log("Git repository already initialized") 
-        process.exit() 
+        process.exit()
         }
-        fs.mkdirSync(this.repositoryName)
+        if(!fs.existsSync(this.repositoryName))
+            fs.mkdirSync(this.repositoryName)
         fs.mkdirSync(this.gitDir)
     }
     public async getUserInput(): Promise<void>
@@ -151,8 +154,11 @@ export class Init
         this.createRefsDir()
         this.createPackageDotJsonFile()
         fs.copyFileSync(fs.realpathSync("scripts.json"),fs.realpathSync(this.pkg_json))
-        await this.getUserInput()
-        this._writeToEnv()
+        if (!fs.existsSync(this.envFile))
+         {
+          await this.getUserInput()
+          this._writeToEnv()
+         }
         console.log("Initialized empty Git repository :" + this.repositoryName)
     }
     
