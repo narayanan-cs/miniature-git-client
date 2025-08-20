@@ -58,4 +58,4 @@ I have covered the following cases
 See [License](https://github.com/narayanan-cs/miniature-git-client/blob/main/LICENSE)
   
   
-  
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/narayanan-cs/miniature-git-client)  
